@@ -5,16 +5,20 @@ import AdventureViewer from './AdventureViewer';
 import React from 'react';
 import Tabs from './components/Tabs';
 
-function TabOne() {
+function TabTripBrief() {
   return <div>Trip Brief</div>;
 }
 
-function TabTwo() {
+function TabAdventureViewer() {
   return <div><AdventureViewer /></div>;
 }
 
-function TabThree() {
+function TabTripGear() {
   return <div>Trip Gear</div>;
+}
+
+function TabTripDebrief() {
+  return <div>Debrief</div>;
 }
 
 export default function Home() {
@@ -23,9 +27,10 @@ export default function Home() {
       <h1 className="text-2xl font-bold mb-4">Adventure Tabs</h1>
       <Tabs
         tabs={{
-          Brief: <TabOne />,
-          Adventure: <TabTwo />,
-          Gear: <TabThree />
+          Brief: <TabTripBrief />,
+          Gear: <TabTripGear />,
+          Adventure: <TabAdventureViewer />,
+          Debrief: <TabTripDebrief />
         }}
       />
     </div>

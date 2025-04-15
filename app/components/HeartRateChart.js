@@ -87,6 +87,15 @@ export default function HeartRateChart({ filename, videoTime, age, weight, gende
     return date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds();
   }
 
+  // Helper function to format time to hours and minutes
+  function formatTimeToHoursMinutes(seconds) {
+    const totalMinutes = Math.floor(seconds / 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    return `${hours}:${minutes.toString().padStart(2, '0')}`; // Ensure two-digit minutes
+  }
+
   return (
     <div className="w-full h-64 bg-white p-4 shadow rounded">
       <h2 className="text-lg font-semibold mb-2">Heart Rate and Calorie Burn Over Time</h2>
@@ -98,7 +107,8 @@ export default function HeartRateChart({ filename, videoTime, age, weight, gende
             tick={{ fontSize: 12 }}
             domain={[Math.max(videoTime - 60, 0), Math.max(videoTime, 60)]} // Always show 60 seconds
             type="number"
-            label={{ value: 'Time (s)', position: 'insideBottomRight', offset: -5 }}
+            label={{ value: 'Time (h:mm)', position: 'insideBottomRight', offset: -5 }}
+            tickFormatter={(time) => formatTimeToHoursMinutes(time)} // Format ticks
           />
           <YAxis
             yAxisId="left"
