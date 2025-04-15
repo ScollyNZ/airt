@@ -34,3 +34,22 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Other Ideas
+- Trip brief tab
+- Gear tab
+ - Technical gear
+ - Food
+ - clothing
+ - overall weight
+- Debrief tab
+  - what gear didn't you use
+  - what were the highlights
+  - what gear was missed
+  - what mistakes were made
+
+```sql
+select * from blah where x = 1
+select blah
+```
+

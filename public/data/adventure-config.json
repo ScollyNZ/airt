@@ -1,61 +1,66 @@
 {
-    "name": "Mountain Adventure",
-    "description": "A thrilling hike through the mountains, filled with stunning landscapes and challenging terrains.",
-    "videos": [
-      {
-        "youtube_id": "dQw4w9WgXcQ",
-        "start_time": "00:00:00"
+  "name": "Mountain Adventure",
+  "description": "A thrilling hike through the mountains, filled with stunning landscapes and challenging terrains.",
+  "videos": [
+    {
+      "youtube_id": "dQw4w9WgXcQ",
+      "start_time": "00:00:00"
+    }
+  ],
+  "points_of_interest": [
+    {
+      "title": "Summit Top",
+      "type": "summit",
+      "description": "Reached the summit after a tough climb!!!!",
+      "timecode": "00:01:55",
+      "location": {
+        "lat": -40.123456,
+        "lng": 175.123456
+      },
+      "start_location": {
+        "lat": -40.120000,
+        "lng": 175.120000
+      },
+      "end_location": {
+        "lat": -40.125000,
+        "lng": 175.125000
       }
-    ],
-    "points_of_interest": [
-      {
-        "title": "Summit",
-        "type": "summit",
-        "description": "Reached the summit after a tough climb!",
-        "timecode": "00:01:45",
-        "location": {
-          "lat": -40.123456,
-          "lng": 175.123456
-        },
-        "start_location": {
-          "lat": -40.120000,
-          "lng": 175.120000
-        },
-        "end_location": {
-          "lat": -40.125000,
-          "lng": 175.125000
-        }
-      },
-      {
-        "title": "River Crossing",
-        "type": "river_crossing",
-        "description": "Crossed a fast-flowing river. Took a break after.",
-        "timecode": "0:01:10",
-        "location": {
-          "lat": -40.130000,
-          "lng": 175.130000
-        }
-      },
-      {
-        "title": "Wildlife Sighting",
-        "type": "wildlife",
-        "description": "Saw a Kiwi during our trek! A rare sight.",
-        "timecode": "00:01:15",
-        "location": {
-          "lat": -40.135000,
-          "lng": 175.135000
-        }
-      },
-      {
-        "title": "Meal Break",
-        "type": "meal",
-        "description": "Taking a snack break and enjoying the view.",
-        "timecode": "00:01:30",
-        "location": {
-          "lat": -40.140000,
-          "lng": 175.140000
-        }
+    },
+    {
+      "title": "River Crossing",
+      "type": "river_crossing",
+      "description": "Crossed a fast-flowing river. Took a break after.",
+      "timecode": "0:01:10",
+      "location": {
+        "lat": -40.130000,
+        "lng": 175.130000
       }
-    ]
+    },
+    {
+      "title": "Wildlife Sighting",
+      "type": "wildlife",
+      "description": "Saw a Kiwi during our trek! A rare sight.",
+      "timecode": "00:01:15",
+      "location": {
+        "lat": -40.135000,
+        "lng": 175.135000
+      }
+    },
+    {
+      "title": "Meal Break",
+      "type": "meal",
+      "description": "Taking a snack break and enjoying the view.",
+      "timecode": "00:01:30",
+      "location": {
+        "lat": -40.140000,
+        "lng": 175.140000
+      }
+    }
+  ],
+  "heart_rate_file": "data/activity1.tcx",
+  "user": {
+    "age": 30,
+    "weight": 70,
+    "gender": "male"
   }
-  
+}
