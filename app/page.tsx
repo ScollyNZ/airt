@@ -6,8 +6,8 @@ import MarkdownRenderer from './components/MarkdownRenderer';
 import AdventureClock from './components/AdventureClock';
 import { useTimeController } from './components/TimeControllerContext';
 
-function TabTripBrief({ config }) {
-  return <div><MarkdownRenderer markdown={config.brief}/></div>;
+function TabTripBrief({ briefText }) {
+  return <div><MarkdownRenderer markdown={briefText}/></div>;
 }
 
 function TabAdventureViewer({ config }) {
@@ -30,47 +30,46 @@ function TabTripDebrief() {
   return <div>Debrief</div>;
 }
 
+interface TabsProps {
+  tabs: {
+    [key: string]: React.ReactNode;
+  };
+}
+
 export default function Home() {
   const [config, setConfig] = useState(null);
+  const [adventureBrief, setAdventureBrief] = useState(null);
   const adventureStartTime = null;
   const { setAdventureStartTime } = useTimeController(); // Access the TimeController
 
-  // Custom formatter for elapsed time
-  const formatElapsedTime = (date) => {
-    const now = Date.now();
-    const diff = now - date.getTime();
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    return `${days}d:${hours.toString().padStart(2, '0')}h:${minutes
-      .toString()
-      .padStart(2, '0')}m:${seconds.toString().padStart(2, '0')}s`;
-  };
-
   useEffect(() => {
-    // Fetch the adventure configuration
     const fetchConfig = async () => {
       try {
-        const response = await fetch('/data/adventure-config.json'); // Adjust the path as needed
-        const data = await response.json();
-        setConfig(data);
-        setAdventureStartTime(new Date(data.adventureStartTime).getTime()); // Example start time
+        const response = await fetch('/data/mt-murchison-2025-04-23/adventure-config.json');
+        const adventure_config = await response.json();
+        setConfig(adventure_config);
+        setAdventureStartTime(new Date(adventure_config.adventureStartTime).getTime());
+
+        const briefResponse = await fetch(adventure_config.adventureBriefFile);
+        const briefText = await briefResponse.text();
+        setAdventureBrief(briefText);
       } catch (error) {
         console.error('Error loading config:', error);
       }
     };
 
     fetchConfig();
-
-    // Set the adventure start time in the TimeController
-    setAdventureStartTime(adventureStartTime);
-  }, [adventureStartTime, setAdventureStartTime]);
+  }, [setAdventureStartTime]);
 
   if (!config) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full"></div>
+          <p className="mt-4 text-gray-600">Loading adventure...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -86,7 +85,7 @@ export default function Home() {
       {/* Tabs Section */}
       <Tabs
         tabs={{
-          Brief: <TabTripBrief config={config}/>,
+          Brief: <TabTripBrief briefText={adventureBrief}/>,
           Gear: <TabTripGear />,
           Food: <TabTripFood />,
           Adventure: <TabAdventureViewer config={config} />, // Pass config as a prop

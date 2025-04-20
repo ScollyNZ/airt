@@ -34,9 +34,7 @@ export function TimeControllerProvider({ children }) {
       console.error('Adventure start time is not set.');
       return;
     }
-    console.log('Setting AdventureRelativeTime:', relativeTimeMilliseconds);
     const absoluteAdventureTime = adventureStartTime + relativeTimeMilliseconds; // Convert relative time to absolute AdventureTime
-    console.log('Setting Adventure AbsoluteTime:', absoluteAdventureTime);
     setAdventureTime(absoluteAdventureTime); // Pass sourceId to suppress notifications
   };
 
@@ -47,7 +45,6 @@ export function TimeControllerProvider({ children }) {
     };
 
   const setAdventureStartTimeWithLogging = (startTime, sourceId = null) => {
-    console.log('Adventure Start Time set to:', startTime);
     setAdventureStartTime(startTime);
     setAdventureTime(adventureStartTime, sourceId); // Pass sourceId to suppress notifications
   };

@@ -1,7 +1,7 @@
 {
   "name": "Mountain Adventure",
   "description": "A thrilling hike through the mountains, filled with stunning landscapes and challenging terrains.",
-  "brief":"#Hi \n **Mt Murchison** stands in the back of Arthur's Pass, in the South Island of New Zealand. At 2408 meters high it doesn't quite make it into the top 100 lists, landing in position 101. ClimbNZ,org.nz lists the Mount White Route as a Grade 1. While I've climbed plenty of harder routes, my 14 year old climbing partner has not. The main challenge is the 21km walk in along the Waimakariri river, to Carrington Hut, then a left turn into the White River. This makes for a long, but achievable, first day.As this is the first trip recorded on Adventures in Real Time, I expect there will be many technical hitches but, all going well, we'll manage to cover the bulk of the trip with sufficient video and telemetry to provide the emmersive experience the site aims to deliver.",
+  "adventureBriefFile": "data/mt-murchison-2025-04-23/mt-muchison-2025-04-13.md",
   "adventureStartTime": "2024-12-30T22:00:00.000Z",
   "videos": [
     {
@@ -59,7 +59,7 @@
       }
     }
   ],
-  "heart_rate_file": "data/mt-rolleston-new-years-day.tcx",
+  "heart_rate_file": "data/mt-murchison-2025-04-23/mt-rolleston-new-years-day.tcx",
   "user": {
     "age": 30,
     "weight": 70,

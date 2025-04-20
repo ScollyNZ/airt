@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "github-markdown-css": "^5.8.1",
     "leaflet": "^1.9.4",
     "next": "15.3.0",
     "react": "^19.1.0",
