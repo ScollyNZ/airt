@@ -15,7 +15,7 @@ export default function AdventureClock() {
     const hours = Math.floor((relativeTime / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((relativeTime / (1000 * 60)) % 60);
     const seconds = Math.floor((relativeTime / 1000) % 60);
-console.log('Formatted elapsed time:', `${days}d ${hours.toString().padStart(2, '0')}h:${minutes.toString().padStart(2, '0')}m:${seconds.toString().padStart(2, '0')}s`);
+console.log('Adventure Clock Formatted elapsed time:', `${days}d ${hours.toString().padStart(2, '0')}h:${minutes.toString().padStart(2, '0')}m:${seconds.toString().padStart(2, '0')}s`);
     return `${days}d ${hours.toString().padStart(2, '0')}h:${minutes
       .toString()
       .padStart(2, '0')}m:${seconds.toString().padStart(2, '0')}s`;
@@ -29,14 +29,12 @@ console.log('Formatted elapsed time:', `${days}d ${hours.toString().padStart(2, 
     const day = date.getDate().toString().padStart(2, '0');
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
-console.log('Formatted real time:', `${year}-${month}-${day} ${hours}:${minutes}`);
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   };
 
   useEffect(() => {
     // Register the AdventureClock with the TimeController
     const unregister = register('adventure-clock', () => {
-      console.log('AdventureClock received new time:');
 
       // Update the absolute AdventureTime
       const adventureTime = getAdventureTime();

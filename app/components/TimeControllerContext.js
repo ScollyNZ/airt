@@ -23,21 +23,21 @@ export function TimeControllerProvider({ children }) {
     notifyTimeChange(sourceId); // Notify all listeners about the new time
   };
 
-  const notifyTimeChange = (sourceId = null) => {
-    listeners.current.forEach((callBack, id) => {
-      if (callBack !== sourceId) {
+  const notifyTimeChange = () => {
+    listeners.current.forEach((callBack) => {
         callBack(); // Notify all listeners except the source
-      }
     });
   }
 
-  const setAdventureRelativeTime = (relativeTimeMilliseconds, sourceId = null) => {
+  const setAdventureRelativeTime = (relativeTimeMilliseconds) => {
     if (adventureStartTime === 0) {
       console.error('Adventure start time is not set.');
       return;
     }
+    console.log('Setting AdventureRelativeTime:', relativeTimeMilliseconds);
     const absoluteAdventureTime = adventureStartTime + relativeTimeMilliseconds; // Convert relative time to absolute AdventureTime
-    setAdventureTime(absoluteAdventureTime, sourceId); // Pass sourceId to suppress notifications
+    console.log('Setting Adventure AbsoluteTime:', absoluteAdventureTime);
+    setAdventureTime(absoluteAdventureTime); // Pass sourceId to suppress notifications
   };
 
   const resetTime = (sourceId = null) => {
@@ -54,6 +54,7 @@ export function TimeControllerProvider({ children }) {
 
   // Get the current AdventureTime (milliseconds since epoch)
   const getAdventureTime = () => {
+    console.log('TimeController: Getting AdventureTime:', adventureTime.current);
     return adventureTime.current;
   };
 

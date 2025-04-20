@@ -47,7 +47,6 @@ export default function VideoPlayer({ videoId }) {
                   const time = newPlayer.getCurrentTime() * 1000; // Convert seconds to milliseconds
                   if (time !== lastSendTime.current) {
                     isSending.current = true;
-                    console.log('VideoPlayer sending time: ', time);
                     setAdventureRelativeTime(time); // Set relative time on the TimeController
                     setTimeout(() => {
                       isSending.current = false;
