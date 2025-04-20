@@ -6,55 +6,26 @@ import 'leaflet/dist/leaflet.css';
 import HeartRateChart from './components/HeartRateChart';
 import EventTimeLine from './components/EventTimeLine';
 import AltitudeChart from './components/AltitudeChart';
-import { parseStringPromise } from 'xml2js'; // Install this library with `npm install xml2js`
+import { useTimeController } from './components/TimeControllerContext';
+import { parseStringPromise } from 'xml2js';
 
-const adventureConfigUrl = '/data/adventure-config.json'; // Adjust to your storage path
-
-async function AdventureStartTime(tcxFileUrl) {
-  try {
-    // Fetch the TCX file
-    const response = await fetch(tcxFileUrl);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch TCX file: ${response.statusText}`);
-    }
-
-    // Parse the TCX file content
-    const fileContent = await response.text();
-    const result = await parseStringPromise(fileContent);
-
-    // Extract the first timestamp from the TCX file
-    const trackpoints =
-      result.TrainingCenterDatabase.Activities[0].Activity[0].Lap[0].Track[0].Trackpoint;
-
-    if (!trackpoints || trackpoints.length === 0) {
-      throw new Error('No trackpoints found in the TCX file.');
-    }
-
-    // Get the first timestamp
-    const firstTimestamp = trackpoints[0].Time[0];
-
-    // Convert the timestamp to a JavaScript Date object
-    return new Date(firstTimestamp).getTime() / 1000; // Return as seconds since epoch
-  } catch (error) {
-    console.error('Error retrieving adventure start time:', error);
-    return null;
-  }
-}
-
-export default function AdventureViewer() {
-  const [config, setConfig] = useState(null);
+export default function AdventureViewer({ config }) {
   const [videoTime, setVideoTime] = useState(0);
   const [player, setPlayer] = useState(null);
-  const [gpsData, setGpsData] = useState([]); // Store GPS coordinates for the map plot
+  const [gpsData, setGpsData] = useState([]);
   const [firstTimestamp, setFirstTimestamp] = useState(null);
-  const [altitudeData, setAltitudeData] = useState([]); // Store altitude data
+  const [altitudeData, setAltitudeData] = useState([]);
+  const { register, setTime } = useTimeController();
+  const video_player_id = 'video-player';
 
   useEffect(() => {
-    // Fetch the adventure configuration
-    fetch(adventureConfigUrl)
-      .then((res) => res.json())
-      .then(setConfig);
-  }, []);
+    const unregister = register(video_player_id, (newTime) => {
+      console.log('Player received new time:', newTime);
+      // Seek the video
+    });
+
+    return unregister;
+  }, [register]);
 
   useEffect(() => {
     async function fetchTcxFile() {
@@ -84,7 +55,7 @@ export default function AdventureViewer() {
 
         // Extract altitude data
         const altitudeData = trackpoints.map((point, index) => ({
-          time: index, // Use the index as a placeholder for time
+          time: index,
           altitude: parseFloat(point.AltitudeMeters?.[0] || 0),
         }));
 
@@ -100,67 +71,27 @@ export default function AdventureViewer() {
   useEffect(() => {
     async function fetchStartTime() {
       if (config?.heart_rate_file) {
-        const startTime = await AdventureStartTime(config.heart_rate_file);
-        setFirstTimestamp(startTime);
+        const response = await fetch(config.heart_rate_file);
+        const fileContent = await response.text();
+        const result = await parseStringPromise(fileContent);
+
+        const trackpoints =
+          result.TrainingCenterDatabase.Activities[0].Activity[0].Lap[0].Track[0].Trackpoint;
+
+        if (trackpoints.length > 0) {
+          const firstTimestamp = new Date(trackpoints[0].Time[0]).getTime() / 1000;
+          setFirstTimestamp(firstTimestamp);
+        }
       }
     }
 
     fetchStartTime();
   }, [config]);
 
-  useEffect(() => {
-    // Load the YouTube IFrame API script
-    if (typeof window !== 'undefined') {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      document.body.appendChild(tag);
-
-      // Set up the YouTube API ready callback
-      window.onYouTubeIframeAPIReady = () => {
-        if (config && !player) {
-          const newPlayer = new window.YT.Player('youtube-player', {
-            videoId: config.videos[0].youtube_id,
-            playerVars: {
-              controls: 0, // Hide all controls
-              modestbranding: 1, // Remove YouTube logo
-              rel: 0, // Disable related videos at the end
-              showinfo: 0, // Hide video title and uploader info
-              autoplay: 0, // Autoplay the video
-            },
-            events: {
-              onReady: (event) => event.target.playVideo(),
-              onStateChange: () => {
-                const interval = setInterval(() => {
-                  const time = newPlayer.getCurrentTime();
-                  setVideoTime(time);
-                }, 1000);
-                return () => clearInterval(interval);
-              },
-            },
-          });
-          setPlayer(newPlayer);
-        }
-      };
-    }
-  }, [config, player]);
-
-  // Define the onSeekToTime function
-  const onSeekToTime = (absoluteTimeStamp) => {
-    if (player && absoluteTimeStamp !== null) {
-  
-      player.seekTo(CalculateRelativeTime(absoluteTimeStamp), true); // Seek to the specified time
-    }
-  };
-
   if (!config) return <div>Loading...</div>;
 
   return (
     <div className="relative flex flex-col h-screen w-4/5 mx-auto">
-      {/* Adventure Clock */}
-      <div className="absolute top-4 right-4">
-       
-      </div>
-
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row items-center justify-between bg-gray-100 p-4 shadow-md">
         <h1 className="text-2xl font-bold">{config.name}</h1>
@@ -188,14 +119,14 @@ export default function AdventureViewer() {
                   position={[poi.location.lat, poi.location.lng]}
                   eventHandlers={{
                     mouseover: (e) => {
-                      e.target.openPopup(); // Open the popup on mouse over
+                      e.target.openPopup();
                     },
                     mouseout: (e) => {
-                      e.target.closePopup(); // Close the popup when the mouse leaves
+                      e.target.closePopup();
                     },
                     click: () => {
                       const time = parseTimecode(poi.timecode);
-                      if (player && time !== null) player.seekTo(time, true); // Sync with the video on click
+                      if (player && time !== null) player.seekTo(time, true);
                     },
                   }}
                 >
@@ -206,7 +137,6 @@ export default function AdventureViewer() {
                   </Popup>
                 </Marker>
               ))}
-              {/* Add a Polyline to plot the GPS data */}
               {gpsData.length > 0 && <Polyline positions={gpsData} color="blue" />}
             </MapContainer>
 
@@ -214,11 +144,18 @@ export default function AdventureViewer() {
             <div className="h-full w-1/3 overflow-y-auto">
               <EventTimeLine
                 points_of_interest={config.points_of_interest}
-                onSeekToTime={onSeekToTime} // Pass the onSeekToTime function
+                onSeekToTime={(time) => {
+                  if (player) player.seekTo(time, true);
+                }}
               />
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Altitude Chart Section */}
+      <div className="w-full mt-4">
+        <AltitudeChart data={altitudeData} />
       </div>
 
       {/* Heart Rate Chart Section */}
@@ -235,32 +172,8 @@ export default function AdventureViewer() {
           <p>Loading heart rate data...</p>
         )}
       </div>
-
-      {/* Altitude Chart Section */}
-      <div className="w-full mt-4">
-        <AltitudeChart data={altitudeData} />
-      </div>
     </div>
   );
-}
-
-function parseTimecode(tc) {
-  if (typeof tc !== 'string') return null;
-  const parts = tc.split(':');
-  if (parts.length !== 3 || parts.some((p) => isNaN(Number(p)))) return null;
-
-  const [h, m, s] = parts.map(Number);
-  return h * 3600 + m * 60 + s;
-}
-
-function CalculateRelativeTime(absoluteTimeStamp) {
-  if (!absoluteTimeStamp || !firstTimestamp) {
-    console.error('Invalid timestamps provided.');
-    return null;
-  }
-
-  const relativeTime = absoluteTimeStamp - firstTimestamp;
-  return Math.max(relativeTime, 0); // Ensure non-negative time
 }
 
 

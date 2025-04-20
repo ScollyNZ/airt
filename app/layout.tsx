@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Orbitron } from "next/font/google"; // Import the Orbitron font
+import { TimeControllerProvider } from './components/TimeControllerContext';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,7 +34,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${orbitron.className} antialiased`}
       >
-        {children}
+        <TimeControllerProvider>
+          {children}
+        </TimeControllerProvider>
       </body>
     </html>
   );

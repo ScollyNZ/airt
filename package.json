@@ -14,8 +14,10 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-leaflet": "^5.0.0",
+    "react-markdown": "^10.1.0",
     "react-seven-segment-display": "^2.1.0",
     "recharts": "^2.15.2",
+    "remark-gfm": "^4.0.1",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {

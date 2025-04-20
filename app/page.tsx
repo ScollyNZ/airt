@@ -1,17 +1,18 @@
 'use client';
+import React, { useEffect, useState } from 'react';
 import AdventureViewer from './AdventureViewer';
 import SegmentClock from './components/SegmentClock';
-import React from 'react';
 import Tabs from './components/Tabs';
+import MarkdownRenderer from './components/MarkdownRenderer';
 
-function TabTripBrief() {
-  return <div>Trip Brief</div>;
+function TabTripBrief({ config }) {
+  return <div><MarkdownRenderer markdown={config.brief}/></div>;
 }
 
-function TabAdventureViewer() {
+function TabAdventureViewer({ config }) {
   return (
     <div>
-      <AdventureViewer />
+      <AdventureViewer config={config} />
     </div>
   );
 }
@@ -20,11 +21,16 @@ function TabTripGear() {
   return <div>Trip Gear</div>;
 }
 
+function TabTripFood() {
+  return <div>Food</div>;
+}
+
 function TabTripDebrief() {
   return <div>Debrief</div>;
 }
 
 export default function Home() {
+  const [config, setConfig] = useState(null);
   const adventureStartTime = new Date('2025-04-15T12:00:00Z').getTime(); // Example start time
 
   // Custom formatter for elapsed time
@@ -41,6 +47,25 @@ export default function Home() {
       .toString()
       .padStart(2, '0')}m:${seconds.toString().padStart(2, '0')}s`;
   };
+
+  useEffect(() => {
+    // Fetch the adventure configuration
+    const fetchConfig = async () => {
+      try {
+        const response = await fetch('/data/adventure-config.json'); // Adjust the path as needed
+        const data = await response.json();
+        setConfig(data);
+      } catch (error) {
+        console.error('Error loading config:', error);
+      }
+    };
+
+    fetchConfig();
+  }, []);
+
+  if (!config) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="max-w-9/10 mx-auto mt-10">
@@ -66,9 +91,10 @@ export default function Home() {
       {/* Tabs Section */}
       <Tabs
         tabs={{
-          Brief: <TabTripBrief />,
+          Brief: <TabTripBrief config={config}/>,
           Gear: <TabTripGear />,
-          Adventure: <TabAdventureViewer />,
+          Food: <TabTripFood />,
+          Adventure: <TabAdventureViewer config={config} />, // Pass config as a prop
           Debrief: <TabTripDebrief />,
         }}
       />
