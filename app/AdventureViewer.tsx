@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
+import AdventureMap from './components/AdventureMap';
 import HeartRateChart from './components/HeartRateChart';
 import EventTimeLine from './components/EventTimeLine';
 import AltitudeChart from './components/AltitudeChart';
@@ -68,47 +67,15 @@ export default function AdventureViewer({ config }) {
       {/* Main Content Section */}
       <div className="flex flex-col lg:flex-row flex-grow">
         {/* Video Player Section */}
-        <VideoPlayer
-          videoId={config.videos[0].youtube_id}
-        />
+        <VideoPlayer videoId={config.videos[0].youtube_id} />
         <div className="w-full lg:w-1/3 p-4">
           <div className="flex flex-row h-96 w-full">
             {/* Map Section */}
-            <MapContainer
-              center={[
-                config.points_of_interest[0].location.lat,
-                config.points_of_interest[0].location.lng,
-              ]}
-              zoom={13}
-              className="h-full w-2/3"
-            >
-              <TileLayer url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png" />
-              {config.points_of_interest.map((poi, i) => (
-                <Marker
-                  key={i}
-                  position={[poi.location.lat, poi.location.lng]}
-                  eventHandlers={{
-                    mouseover: (e) => {
-                      e.target.openPopup();
-                    },
-                    mouseout: (e) => {
-                      e.target.closePopup();
-                    },
-                    click: () => {
-                      const time = parseTimecode(poi.timecode);
-                      if (time !== null) setVideoTime(time);
-                    },
-                  }}
-                >
-                  <Popup>
-                    <strong>{poi.title}</strong>
-                    <br />
-                    {poi.description}
-                  </Popup>
-                </Marker>
-              ))}
-              {gpsData.length > 0 && <Polyline positions={gpsData} color="blue" />}
-            </MapContainer>
+            <AdventureMap
+              pointsOfInterest={config.points_of_interest}
+              gpsData={gpsData}
+              onMarkerClick={(time) => setVideoTime(time)}
+            />
 
             {/* Event Timeline Section */}
             <div className="h-full w-1/3 overflow-y-auto">
