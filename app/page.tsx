@@ -1,9 +1,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import AdventureViewer from './AdventureViewer';
-import SegmentClock from './components/SegmentClock';
 import Tabs from './components/Tabs';
 import MarkdownRenderer from './components/MarkdownRenderer';
+import AdventureClock from './components/AdventureClock';
+import { useTimeController } from './components/TimeControllerContext';
 
 function TabTripBrief({ config }) {
   return <div><MarkdownRenderer markdown={config.brief}/></div>;
@@ -31,7 +32,8 @@ function TabTripDebrief() {
 
 export default function Home() {
   const [config, setConfig] = useState(null);
-  const adventureStartTime = new Date('2025-04-15T12:00:00Z').getTime(); // Example start time
+  const adventureStartTime = null;
+  const { setAdventureStartTime } = useTimeController(); // Access the TimeController
 
   // Custom formatter for elapsed time
   const formatElapsedTime = (date) => {
@@ -55,13 +57,17 @@ export default function Home() {
         const response = await fetch('/data/adventure-config.json'); // Adjust the path as needed
         const data = await response.json();
         setConfig(data);
+        setAdventureStartTime(new Date(data.adventureStartTime).getTime()); // Example start time
       } catch (error) {
         console.error('Error loading config:', error);
       }
     };
 
     fetchConfig();
-  }, []);
+
+    // Set the adventure start time in the TimeController
+    setAdventureStartTime(adventureStartTime);
+  }, [adventureStartTime, setAdventureStartTime]);
 
   if (!config) {
     return <div>Loading...</div>;
@@ -74,18 +80,7 @@ export default function Home() {
         {/* Title on the left */}
         <h1 className="text-2xl font-bold">Adventures In Real Time</h1>
         {/* Adventure Clocks on the right */}
-        <div className="flex flex-col items-end">
-          {/* Elapsed Time Clock */}
-          <SegmentClock
-            showSeconds
-            formatTime={() => formatElapsedTime(new Date(adventureStartTime))}
-          />
-          {/* Real-Time Clock */}
-          <SegmentClock
-            showSeconds
-            className="text-2xl" // Adjust font size for the real-time clock
-          />
-        </div>
+        <AdventureClock/>
       </div>
 
       {/* Tabs Section */}
