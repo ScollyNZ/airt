@@ -15,7 +15,6 @@ export default function AdventureClock() {
     const hours = Math.floor((relativeTime / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((relativeTime / (1000 * 60)) % 60);
     const seconds = Math.floor((relativeTime / 1000) % 60);
-console.log('Adventure Clock Formatted elapsed time:', `${days}d ${hours.toString().padStart(2, '0')}h:${minutes.toString().padStart(2, '0')}m:${seconds.toString().padStart(2, '0')}s`);
     return `${days}d ${hours.toString().padStart(2, '0')}h:${minutes
       .toString()
       .padStart(2, '0')}m:${seconds.toString().padStart(2, '0')}s`;

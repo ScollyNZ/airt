@@ -4,7 +4,16 @@ import AdventureViewer from './AdventureViewer';
 import Tabs from './components/Tabs';
 import MarkdownRenderer from './components/MarkdownRenderer';
 import AdventureClock from './components/AdventureClock';
+import EventTimeLinev2 from './components/EventTimeLinev2';
 import { useTimeController } from './components/TimeControllerContext';
+
+
+const pointsOfInterest = [
+  { time: '2025-04-15T16:36:00', description: 'Your parcel has been delivered by your local courier driver based at Christchurch East Depot', type: 'climb'},
+  { time: '2025-04-15T08:21:00', description: 'Your item is with our courier for delivery. It should be with you today',type: 'summit' },
+  { time: '2025-04-15T04:55:00', description: 'Your parcel has been processed',type:'headlamp' },
+  { time: '2025-04-14T20:15:00', description: 'Your parcel has been processed',type:'crampon' },
+];
 
 function TabTripBrief({ briefText }) {
   return <div><MarkdownRenderer markdown={briefText}/></div>;
@@ -14,6 +23,14 @@ function TabAdventureViewer({ config }) {
   return (
     <div>
       <AdventureViewer config={config} />
+    </div>
+  );
+}
+
+function TabTest() {
+  return (
+    <div>
+      <EventTimeLinev2 points={pointsOfInterest} />
     </div>
   );
 }
@@ -90,6 +107,7 @@ export default function Home() {
           Food: <TabTripFood />,
           Adventure: <TabAdventureViewer config={config} />, // Pass config as a prop
           Debrief: <TabTripDebrief />,
+          Test: <TabTest />,
         }}
       />
     </div>

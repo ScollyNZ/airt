@@ -4,7 +4,7 @@
 
 While I've climbed plenty of harder routes, my 15-year-old climbing partner has not. The main challenge is the 21km walk in along the Waimakariri River to Carrington Hut, then a left turn into the White River. This makes for a long, but achievable, first day.
 
-Easter weekend just rained, with a few heavy rain warnings. The Waimakariri river, which the White River feeds into, had been flowing at ~40cum/s for the previous week. On the morning of the 21st it was flowing at 150cum/s but the peak rain is over. It can take a few days to drop back to normal levels after a rain event. 
+Easter weekend just rained, with a few heavy rain warnings. The Waimakariri river, which the White River feeds into, had been flowing at ~40cum/s for the previous week. At midnight on the 20th it was flowing at 150cum/s but the peak rain is over. It can take a few days to drop back to normal levels after a rain event. 
 
 This route requires many crossings of the Waimakariri river and the White river so the trip will have be to cancelled, or further delayed, if the rain persists.
 

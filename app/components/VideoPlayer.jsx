@@ -38,7 +38,7 @@ export default function VideoPlayer({ videoId }) {
               controls: 0, // Hide controls
               modestbranding: 1, // Remove YouTube logo
               rel: 0, // Disable related videos
-              autoplay: 1, // Autoplay the video
+              autoplay: 0, // Autoplay the video
             },
             events: {
               onReady: (event) => event.target.playVideo(),
