@@ -9,10 +9,12 @@ import { useTimeController } from './components/TimeControllerContext';
 
 
 const pointsOfInterest = [
-  { time: '2025-04-15T16:36:00', description: 'Your parcel has been delivered by your local courier driver based at Christchurch East Depot', type: 'climb'},
-  { time: '2025-04-15T08:21:00', description: 'Your item is with our courier for delivery. It should be with you today',type: 'summit' },
-  { time: '2025-04-15T04:55:00', description: 'Your parcel has been processed',type:'headlamp' },
-  { time: '2025-04-14T20:15:00', description: 'Your parcel has been processed',type:'crampon' },
+  { time: 'Tue Dec 31 2024 11:00:02 GMT+1300', description: 'climbing event', type: 'climb'},
+  { time: 'Tue Dec 31 2024 11:00:12 GMT+1300', description: 'summit',type: 'summit' },
+  { time: 'Tue Dec 31 2024 11:00:22 GMT+1300', description: 'headlamp event',type:'headlamp' },
+  { time: 'Tue Dec 31 2024 11:00:32 GMT+1300', description: 'crampon event',type:'crampon' },
+  { time: 'Tue Dec 31 2024 11:00:42 GMT+1300', description: 'headlamp event',type:'headlamp' },
+  { time: 'Tue Dec 31 2024 11:00:52 GMT+1300', description: 'crampon event',type:'crampon' },
 ];
 
 function TabTripBrief({ briefText }) {

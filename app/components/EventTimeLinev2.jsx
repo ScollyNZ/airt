@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useTimeController } from './TimeControllerContext';
 
 // Inline styles for the timeline component
 const timelineStyles = {
@@ -9,7 +10,7 @@ const timelineStyles = {
     padding: '20px 0',
     borderLeft: '2px solid #ddd',
     fontFamily: 'Arial, sans-serif',
-    overflowY: 'auto', // Enable scrolling
+    overflowY: 'auto', // Enable scrolling within the container
     height: '500px', // Set a height for the scrollable container
   },
   point: {
@@ -24,6 +25,9 @@ const timelineStyles = {
   },
   pointHover: {
     backgroundColor: '#d4f8d4', // Light green background on hover
+  },
+  nextEvent: {
+    backgroundColor: '#d4f8d4', // Light green background for the next event
   },
   iconContainer: {
     position: 'absolute',
@@ -50,24 +54,46 @@ const timelineStyles = {
 
 const EventTimeLinev2 = ({ points }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null); // Track the hovered event
+  const { register, getAdventureTime } = useTimeController();
+  const [currentTime, setCurrentTime] = useState(0); // AdventureTime
+  const [nextEvent, setNextEvent] = useState(null); // Track the next event
   const timelineRef = useRef(null);
 
+  useEffect(() => {
+    // Register the AdventureClock with the TimeController
+    const unregister = register('event-time-line', () => {
+      // Update the absolute AdventureTime
+      const adventureTime = getAdventureTime();
+      receiveCurrentTime(adventureTime);
+    });
+
+    return () => unregister(); // Cleanup on unmount
+  }, [register, getAdventureTime]);
+
   // Function to handle real-time simulation and scroll to the next event
-  const receiveRealTime = (realTime) => {
+  const receiveCurrentTime = (adventureTime) => {
     if (!timelineRef.current) return;
+
+    console.log('EventTimeLine received AdventureTime!:', adventureTime);
 
     // Find the next event that will occur after the given realTime
     const nextEvent = points.find(
-      (point) => new Date(point.time) > new Date(realTime)
+      (point) =>
+        new Date(adventureTime - 5000) < new Date(point.time) &&
+        new Date(point.time) < new Date(adventureTime + 5000)
     );
+
+    console.log('found Next event:', nextEvent);
+
+    setNextEvent(nextEvent); // Update the next event state
 
     if (nextEvent) {
       // Scroll to the next event
       const eventIndex = points.indexOf(nextEvent);
       const eventElement = timelineRef.current.children[eventIndex];
-      if (eventElement) {
-        eventElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setCurrentTime(nextEvent.time); // Update the current time state
+      if (eventElement && timelineRef.current) {
+        const offsetTop = eventElement.offsetTop;
+        timelineRef.current.scrollTop = offsetTop; // Scroll the container to the top of the event
       }
     }
   };
@@ -80,8 +106,9 @@ const EventTimeLinev2 = ({ points }) => {
     const eventIndex = points.findIndex((point) => point.time === eventTime);
     if (eventIndex !== -1) {
       const eventElement = timelineRef.current.children[eventIndex];
-      if (eventElement) {
-        eventElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (eventElement && timelineRef.current) {
+        const offsetTop = eventElement.offsetTop;
+        timelineRef.current.scrollTop = offsetTop; // Scroll the container to the top of the event
       }
     }
   };
@@ -94,6 +121,7 @@ const EventTimeLinev2 = ({ points }) => {
           style={{
             ...timelineStyles.point,
             ...(hoveredIndex === index ? timelineStyles.pointHover : {}),
+            ...(nextEvent === point ? timelineStyles.nextEvent : {}), // Apply nextEvent style
           }}
           onMouseEnter={() => setHoveredIndex(index)} // Set hovered index on mouse enter
           onMouseLeave={() => setHoveredIndex(null)} // Clear hovered index on mouse leave
