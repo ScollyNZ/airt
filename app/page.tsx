@@ -5,6 +5,7 @@ import Tabs from './components/Tabs';
 import MarkdownRenderer from './components/MarkdownRenderer';
 import AdventureClock from './components/AdventureClock';
 import EventTimeLinev2 from './components/EventTimeLinev2';
+import AdventureDashboard from './components/AdventureDashboard';
 import { useTimeController } from './components/TimeControllerContext';
 
 
@@ -37,6 +38,14 @@ function TabTest() {
   );
 }
 
+function TabDashboard() {
+  return (
+    <div>
+      <AdventureDashboard />
+    </div>
+  );
+}
+
 function TabTripGear() {
   return <div>Trip Gear</div>;
 }
@@ -48,6 +57,7 @@ function TabTripFood() {
 function TabTripDebrief() {
   return <div>Debrief</div>;
 }
+
 
 interface TabsProps {
   tabs: {
@@ -64,7 +74,7 @@ export default function Home() {
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const response = await fetch('/data/mt-murchison-2025-04-23/adventure-config.json');
+        const response = await fetch('/data/halswell-quarry-2025-04-27/adventure-config.json');
         const adventure_config = await response.json();
         setConfig(adventure_config);
         setAdventureStartTime(new Date(adventure_config.adventureStartTime).getTime());
@@ -110,6 +120,7 @@ export default function Home() {
           Adventure: <TabAdventureViewer config={config} />, // Pass config as a prop
           Debrief: <TabTripDebrief />,
           Test: <TabTest />,
+          Dashboard: <TabDashboard />,
         }}
       />
     </div>

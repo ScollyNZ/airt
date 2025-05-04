@@ -1,0 +1,48 @@
+  {
+    "name": "Halswell Quarry Loop",
+    "description": "A Sunday morning walk around the Halswell Quarry Loop. A beautiful day with clear skies and a gentle breeze.",
+    "adventureBriefFile": "data/mt-murchison-2025-04-23/mt-muchison-2025-04-13.md",
+    "adventureStartTime": "2025-04-26T20:47:22.000Z",
+    "videos": [
+        {
+            "youtube_id": "ESMflWw8UFc",
+            "start_time": "00:00:00"
+        },
+        {
+            "youtube_id": "6oaK7tpDljo",
+            "start_time": "00:13:58"
+        },
+        {
+            "youtube_id": "-jK7nfla6Xw",
+            "start_time": "00:26:57"
+        }
+    ],
+    "points_of_interest": [
+      {
+        "title": "Summit Top",
+        "type": "summit",
+        "description": "Reached the summit after a tough climb!!!!",
+        "timecode": "2024-12-30T22:39:30.000Z",
+        "location": {
+          "lat": -43.60216895118356,
+          "lng": 172.57831390947104
+        }
+      },
+      {
+        "title": "River Crossing",
+        "type": "river_crossing",
+        "description": "Crossed a fast-flowing river. Took a break after.",
+        "timecode": "2024-12-30T22:41:46.000Z",
+        "location": {
+          "lat": -43.59622165560722,
+          "lng": 172.57808977738023
+        }
+      }
+    ],
+    "heart_rate_file": "data/halswell-quarry-2025-04-27/halswell-quarry-2025-04-27.tcx",
+    "user": {
+      "age": 30,
+      "weight": 70,
+      "gender": "male"
+    }
+  }

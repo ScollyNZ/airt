@@ -68,7 +68,7 @@ export default function AdventureViewer({ config }) {
       <div className="flex flex-col lg:flex-row flex-grow">
         {/* Video Player Section */}
         <VideoPlayer videoId={config.videos[0].youtube_id} />
-        <div className="w-full lg:w-1/3 p-4">
+        <div className="w-full lg:w-1/4 p-4">
           <div className="flex flex-row h-96 w-full">
             {/* Map Section */}
             <AdventureMap
